@@ -3,19 +3,50 @@ import 'package:web/web.dart' as web;
 import 'dart:async';
 import 'package:go_router/go_router.dart';
 
+import 'greeting_screen.dart';//greeting스크린 불러오기
+
 double widthAxis = 700;
 
 void main() async{
-  runApp(const MyApp());
+  WidgetsFlutterBinding.ensureInitialized(); //Flutter 엔진을 올바르게 초기화
+  //go_router 설정
+  final GoRouter _router = GoRouter(
+   initialLocation: '/home',
+    routes: [
+      //페이지 메인홈
+      GoRoute(
+        path: '/home',
+        builder: (context, state) => HomeScreen(),
+      ),
+      //유저 회원가입 및 로그인 안내 페이지로 라우팅
+      GoRoute(
+        path: '/user/greetings',
+        builder: (context, state) => GreetingScreen(),
+      ),
+      /*//회원가입 페이지로 라우팅
+      GoRoute(
+        path: '/user/register',
+      ),
+      //이메일 로그인 페이지로 라우팅
+      GoRoute(
+        path: '/user/login',
+      )*/
+    ]
+  );
+  
+  runApp(MyApp(router: _router));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({super.key, required this.router});
+
+  final GoRouter router; //GoRouter필드
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
+      routerConfig: router, //Gorouter 연결
       title: '통합 웹툰 플랫폼 - 레다게임즈',
-      home: HomeScreen(),
       theme: ThemeData(
         scaffoldBackgroundColor: const Color(0xFF0b0d18),
         colorScheme: ColorScheme.fromSwatch(
@@ -174,7 +205,8 @@ class SearchEngine extends StatelessWidget{
         },
         style: TextButton.styleFrom(
           padding: EdgeInsets.zero,
-          minimumSize: Size(800, 40)
+          minimumSize: Size(double.infinity, 40),
+          foregroundColor: Color(0xFF25304a), //마우스오버 효과 제거
         ),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10.0),
@@ -204,16 +236,22 @@ class SearchEngine extends StatelessWidget{
 }
 
 enum Platform{
+  Trend,
   NaverWebtoon,
-  KaKaoWebtoon;
+  KaKaoWebtoon,
+  LezhineComics;
 
   //오버라이드로 한국어 반환
   String get korean{
     switch(this){
+      case Platform.Trend:
+        return "트렌드";
       case Platform.NaverWebtoon:
         return "네이버웹툰";
       case Platform.KaKaoWebtoon:
         return "카카오웹툰";
+      case Platform.LezhineComics:
+        return "레진코믹스";
     }
   }
 }
@@ -285,7 +323,8 @@ class _PlatformRankState extends State<PlatformRank>{
         },
         style: TextButton.styleFrom(
           padding: EdgeInsets.zero,
-          minimumSize: Size(800, 50)
+          minimumSize: Size(double.infinity, 50),
+          foregroundColor: Color(0xFF25304a), //마우스오버 효과 제거
         ),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10.0),
@@ -316,6 +355,13 @@ class _PlatformRankState extends State<PlatformRank>{
 class UserPage extends StatelessWidget{
   const UserPage({super.key});
 
+  //페이지 라우팅하기
+  void _MoveMyPage(BuildContext context){
+    //로그인이 안됐을 때 greetings 페이지로 이동
+    //로그인이 됐을 때 로그인 페이지로 이동
+    context.push('/user/greetings');
+  }
+
   @override
   Widget build(BuildContext context){
     return Container(
@@ -326,32 +372,31 @@ class UserPage extends StatelessWidget{
       ),
       child: TextButton(
           onPressed: (){
+            _MoveMyPage(context);
           },
           style: TextButton.styleFrom(
-              padding: EdgeInsets.zero,
-              minimumSize: Size(100, 40)
+            padding: EdgeInsets.zero,
+            minimumSize: Size(100, 50),
+            foregroundColor: Color(0xFF25304a), //마우스오버 효과 제거
           ),
-          child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 1.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.person,
-                    color: Color(0xFFd3d3d3),
-                    size: 40,
-                  ),
-                  SizedBox(height: 0), //아이콘과 텍스트 사이의 간격
-                  Text(
-                    '마이페이지',
-                    style: TextStyle(
-                      fontFamily: 'Arial',
-                      fontSize: 10,
-                      color: Colors.white,
-                    ),
-                  )
-                ],
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.person,
+                color: Color(0xFFd3d3d3),
+                size: 40,
+              ),
+              SizedBox(height: 0), //아이콘과 텍스트 사이의 간격
+              Text(
+                '마이페이지',
+                style: TextStyle(
+                  fontFamily: 'Arial',
+                  fontSize: 10,
+                  color: Colors.white,
+                ),
               )
+            ],
           )
       ),
     );
