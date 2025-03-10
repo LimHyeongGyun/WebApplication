@@ -1,0 +1,304 @@
+import 'package:flutter/material.dart';
+import 'package:web/web.dart' as web;
+import 'dart:async';
+
+void main() async{
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: '통합 웹툰 플랫폼 - 레다게임즈',
+      home: HomeScreen(),
+      theme: ThemeData(
+        scaffoldBackgroundColor: const Color(0xFF0b0d18),
+        colorScheme: ColorScheme.fromSwatch(
+            backgroundColor: const Color(0xFF0b0d18)
+        ),
+      ),
+    );
+  }
+}
+
+class HomeScreen extends StatelessWidget{
+  const HomeScreen({super.key});
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Color(0xFF0b0d18),
+        title: Container(
+          height: 56, width: 800,
+          color: Color(0xFF0b0d18),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              //Title로고가 들어갈 곳
+              Text(
+                '레다게임즈',
+                style: TextStyle(
+                  fontFamily: 'Arial',
+                  fontSize: 20,
+                  color: Colors.white,
+                ),
+              ),
+              //사용자 알람 아이콘
+              MyNotification(),
+            ],
+          ),
+        ),
+        centerTitle: true,
+      ),
+      body: Center(
+        child: Container(
+          width: 800,
+          decoration: BoxDecoration(
+            color: Color(0xFF0b0d18)
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              //검색엔진
+              SearchEngine(),
+              SizedBox(height: 20),
+              //동적 플랫폼 랭크 UI
+              PlatformRank(),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+//사용자 알람아이콘 버튼 관리
+class MyNotification extends StatefulWidget {
+  const MyNotification({super.key});
+
+
+  @override
+  State<MyNotification> createState() => _MyNotificationState();
+}
+
+class _MyNotificationState extends State<MyNotification> {
+  bool hasNotification = true;
+
+  //알림 끄기
+  void _onNotificationPressed() {
+    setState(() {
+      hasNotification = false;
+    });
+  }
+  //해당 링크의 페이지로 이동
+  void _launcherURL(){
+    final webtoonUrl = 'https://www.naver.com';
+    web.window.open(webtoonUrl);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        IconButton(
+          icon: Icon(Icons.notifications, color: Colors.white),
+          onPressed:() {
+            _onNotificationPressed(); //알람의 빨간불이 꺼지게 함
+            _launcherURL(); //해당 링크로 이동
+          }
+        ),
+        if(hasNotification)
+          Positioned(
+            top: 10,
+            right: 10,
+            child: Container(
+              width: 8,
+              height: 8,
+              decoration: BoxDecoration(
+                color: Colors.red,
+                shape: BoxShape.circle,
+              ),
+            ),
+          )
+      ],
+    );
+  }
+}
+
+//검색엔진 버튼 관리
+class SearchEngine extends StatelessWidget{
+  const SearchEngine({super.key});
+
+  void _launcherURL(){
+    final webtoonUrl = 'https://www.naver.com';
+    web.window.open(webtoonUrl);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      alignment: Alignment.centerLeft,
+      width: 800, //박스 너비
+      height: 40, //박스 높이
+      //상자모양
+      decoration: BoxDecoration(
+        color: Color(0xFF25304a),
+        borderRadius: BorderRadius.circular(8.0), //모서리 둥글게
+      ),
+      child: TextButton(
+        onPressed: (){
+          _launcherURL(); //해당 링크로 이동
+        },
+        style: TextButton.styleFrom(
+          padding: EdgeInsets.zero,
+          minimumSize: Size(800, 40)
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Icon(
+                Icons.search,
+                color: Colors.white,
+                size: 25,
+              ),
+              SizedBox(width: 15), //아이콘과 텍스트 사이의 간격
+              Text(
+                '작품, 인물, 컬렉션, 게시글을 검색해 보세요.',
+                style: TextStyle(
+                  fontFamily: 'Arial',
+                  fontSize: 15,
+                  color: Colors.white,
+                ),
+              )
+            ],
+          )
+        )
+      ),
+    );
+  }
+}
+
+enum Platform{
+  NaverWebtoon,
+  KaKaoWebtoon;
+
+  //오버라이드로 한국어 반환
+  String get korean{
+    switch(this){
+      case Platform.NaverWebtoon:
+        return "네이버웹툰";
+      case Platform.KaKaoWebtoon:
+        return "카카오웹툰";
+    }
+  }
+}
+//일정 시간 후에 플랫폼이 변동되는 랭크UI
+class PlatformRank extends StatefulWidget{
+  const PlatformRank({super.key});
+
+  @override
+  State<PlatformRank> createState() => _PlatformRankState();
+}
+
+class _PlatformRankState extends State<PlatformRank>{
+
+  Platform platform = Platform.NaverWebtoon;
+  late String platformName = platform.korean;
+  Timer? _timer;
+
+  @override
+  void initState(){
+    super.initState();
+    changePlatformFunction();
+  }
+
+  void changePlatformFunction(){
+    _timer = Timer.periodic(Duration(seconds: 5), (timer){
+      setState(() {
+        int nextIndex = (platform.index + 1) % Platform.values.length; //다음 인덱스로 만약 마지막 인덱스면 첫 인덱스로
+        platform = Platform.values[nextIndex];
+        platformName = platform.korean;
+      });
+    });
+  }
+
+  void _launcherURL(){
+    final naverWebtoonUrl = 'https://comic.naver.com/index';
+    final kakaoWebtoonUrl = 'https://webtoon.kakao.com/';
+    late String webtoonUrl;
+
+    //현재 플랫폼이 네이버 웹툰이면
+    if(platform == Platform.NaverWebtoon){
+      webtoonUrl = naverWebtoonUrl;
+    }
+    else if(platform == Platform.KaKaoWebtoon){
+      webtoonUrl = kakaoWebtoonUrl;
+    }
+    
+    web.window.open(webtoonUrl); //웹툰 페이지 링크로 이동
+  }
+
+  @override
+  void dispose(){
+    _timer?.cancel(); //위젯이 없어질 때 타이머 정리
+    super.dispose();
+  }
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      alignment: Alignment.centerLeft,
+      width: 800, //박스 너비
+      height: 50, //박스 높이
+      //상자모양
+      decoration: BoxDecoration(
+        color: Color(0xFF25304a),
+        borderRadius: BorderRadius.circular(8.0), //모서리 둥글게
+      ),
+      child: TextButton(
+        onPressed: (){
+          _launcherURL(); //해당 링크로 이동
+        },
+        style: TextButton.styleFrom(
+          padding: EdgeInsets.zero,
+          minimumSize: Size(800, 50)
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                '오늘의 \'$platformName\' 랭킹',
+                style: TextStyle(
+                  fontFamily: 'Arial',
+                  fontSize: 18,
+                  color: Colors.white,
+                ),
+              ),
+              Icon(
+                Icons.chevron_right,
+                color: Colors.white,
+                size: 25,
+              ),
+            ],
+          )
+        )
+      ),
+    );
+  }
+}
+
+class MyPage extends StatelessWidget{
+  const MyPage({super.key});
+
+  @override
+  Widget build(BuildContext context){
+    return Scaffold(
+
+    );
+  }
+}
