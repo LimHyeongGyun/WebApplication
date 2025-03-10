@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:web/web.dart' as web;
 import 'dart:async';
+import 'package:go_router/go_router.dart';
+
+double widthAxis = 700;
 
 void main() async{
   runApp(const MyApp());
@@ -31,7 +34,7 @@ class HomeScreen extends StatelessWidget{
       appBar: AppBar(
         backgroundColor: Color(0xFF0b0d18),
         title: Container(
-          height: 56, width: 800,
+          height: 56, width: widthAxis,
           color: Color(0xFF0b0d18),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -52,20 +55,38 @@ class HomeScreen extends StatelessWidget{
         ),
         centerTitle: true,
       ),
+      //하단 고정UI
       body: Center(
         child: Container(
-          width: 800,
+          width: widthAxis,
           decoration: BoxDecoration(
             color: Color(0xFF0b0d18)
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Expanded(
+                child: ListView(
+                  children: [
+                    SearchEngine(),
+                    SizedBox(height: 20),
+                    //동적 플랫폼 랭크 UI
+                    PlatformRank(),
+                  ],
+                ),
+              ),
+              Container(
+                height: 60,
+                width: double.infinity,
+                color: Colors.white,
+                alignment: Alignment.center,
+                child: Row(
+                  children: [
+                    UserPage(),
+                  ],
+                ),
+              )
               //검색엔진
-              SearchEngine(),
-              SizedBox(height: 20),
-              //동적 플랫폼 랭크 UI
-              PlatformRank(),
             ],
           ),
         ),
@@ -140,7 +161,7 @@ class SearchEngine extends StatelessWidget{
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.centerLeft,
-      width: 800, //박스 너비
+      width: double.infinity, //박스 너비
       height: 40, //박스 높이
       //상자모양
       decoration: BoxDecoration(
@@ -251,7 +272,7 @@ class _PlatformRankState extends State<PlatformRank>{
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.centerLeft,
-      width: 800, //박스 너비
+      width: double.infinity, //박스 너비
       height: 50, //박스 높이
       //상자모양
       decoration: BoxDecoration(
@@ -292,13 +313,47 @@ class _PlatformRankState extends State<PlatformRank>{
   }
 }
 
-class MyPage extends StatelessWidget{
-  const MyPage({super.key});
+class UserPage extends StatelessWidget{
+  const UserPage({super.key});
 
   @override
   Widget build(BuildContext context){
-    return Scaffold(
-
+    return Container(
+      width: 140, //박스 너비
+      height: 80, //박스 높이
+      decoration: BoxDecoration(
+        color: Color(0xFF25304a),
+      ),
+      child: TextButton(
+          onPressed: (){
+          },
+          style: TextButton.styleFrom(
+              padding: EdgeInsets.zero,
+              minimumSize: Size(100, 40)
+          ),
+          child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 1.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.person,
+                    color: Color(0xFFd3d3d3),
+                    size: 40,
+                  ),
+                  SizedBox(height: 0), //아이콘과 텍스트 사이의 간격
+                  Text(
+                    '마이페이지',
+                    style: TextStyle(
+                      fontFamily: 'Arial',
+                      fontSize: 10,
+                      color: Colors.white,
+                    ),
+                  )
+                ],
+              )
+          )
+      ),
     );
   }
 }
