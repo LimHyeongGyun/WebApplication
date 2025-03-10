@@ -3,16 +3,16 @@ import 'package:web/web.dart' as web;
 import 'dart:async';
 import 'package:go_router/go_router.dart';
 
-import 'userInformation.dart';
+import 'AppLayout.dart'; //UI레이아웃
+import 'userInformation.dart'; //유저정보
 import 'greeting_screen.dart';//greeting스크린 불러오기
 
+double appbarHeight = 56;
 double widthAxis = 700;
 
-void main() async{
-  WidgetsFlutterBinding.ensureInitialized(); //Flutter 엔진을 올바르게 초기화
-  //go_router 설정
-  final GoRouter _router = GoRouter(
-   initialLocation: '/home',
+//go_router 설정
+final GoRouter _router = GoRouter(
+    initialLocation: '/home',
     routes: [
       //페이지 메인홈
       GoRoute(
@@ -36,25 +36,23 @@ void main() async{
         path: '/user/login',
       )*/
     ]
-  );
-  
+);
+
+void main() async{
   runApp(MyApp(router: _router));
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key, required this.router});
-
-  final GoRouter router; //GoRouter필드
-
+  final GoRouter router;
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      routerConfig: router, //Gorouter 연결
+      routerConfig: _router, //Gorouter 연결
       title: '통합 웹툰 플랫폼 - 레다게임즈',
       theme: ThemeData(
-        scaffoldBackgroundColor: const Color(0xFF0b0d18),
-        colorScheme: ColorScheme.fromSwatch(
-            backgroundColor: const Color(0xFF0b0d18)
+        scaffoldBackgroundColor: Color(0xFF0b0d18),
+        colorScheme: ColorScheme.fromSwatch(backgroundColor: Color(0xFF0b0d18)
         ),
       ),
     );
@@ -65,64 +63,54 @@ class HomeScreen extends StatelessWidget{
   const HomeScreen({super.key});
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Color(0xFF0b0d18),
-        title: Container(
-          height: 56, width: widthAxis,
-          color: Color(0xFF0b0d18),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              //Title로고가 들어갈 곳
-              Text(
-                '레다게임즈',
-                style: TextStyle(
-                  fontFamily: 'Arial',
-                  fontSize: 20,
-                  color: Colors.white,
+    return UILayout(
+      child: Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false, //자동으로 뒤로가기 버튼을 표시하지않음
+          backgroundColor: Color(0xFF0b0d18),
+          titleSpacing: 0,
+          title: Container(
+            height: appbarHeight, width: widthAxis,
+            color: Color(0xFF0b0d18),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                //Title로고가 들어갈 곳
+                Text(
+                  '레다게임즈',
+                  style: TextStyle(
+                    fontFamily: 'Arial',
+                    fontSize: 20,
+                    color: Colors.white,
+                  ),
                 ),
-              ),
-              //사용자 알람 아이콘
-              MyNotification(),
-            ],
+                //사용자 알람 아이콘
+                MyNotification(),
+              ],
+            ),
           ),
+          centerTitle: true,
         ),
-        centerTitle: true,
-      ),
-      //하단 고정UI
-      body: Center(
-        child: Container(
-          width: widthAxis,
-          decoration: BoxDecoration(
-            color: Color(0xFF0b0d18)
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: ListView(
-                  children: [
-                    SearchEngine(),
-                    SizedBox(height: 20),
-                    //동적 플랫폼 랭크 UI
-                    PlatformRank(),
-                  ],
+        body: Center(
+          child: Container(
+            width: widthAxis,
+            decoration: BoxDecoration(color: Color(0xFF0b0d18)
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: ListView(
+                    children: [
+                      SearchEngine(),
+                      SizedBox(height: 20),
+                      //동적 플랫폼 랭크 UI
+                      PlatformRank(),
+                    ],
+                  ),
                 ),
-              ),
-              Container(
-                height: 60,
-                width: double.infinity,
-                color: Colors.white,
-                alignment: Alignment.center,
-                child: Row(
-                  children: [
-                    UserPage(),
-                  ],
-                ),
-              )
-              //검색엔진
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -377,7 +365,7 @@ class UserPage extends StatelessWidget{
       width: 140, //박스 너비
       height: 80, //박스 높이
       decoration: BoxDecoration(
-        color: Color(0xFF25304a),
+        color: Color(0xFF0b0d18),
       ),
       child: TextButton(
           onPressed: (){
@@ -386,7 +374,7 @@ class UserPage extends StatelessWidget{
           style: TextButton.styleFrom(
             padding: EdgeInsets.zero,
             minimumSize: Size(100, 50),
-            foregroundColor: Color(0xFF25304a), //마우스오버 효과 제거
+            foregroundColor: Color(0xFF0b0d18), //마우스오버 효과 제거
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
