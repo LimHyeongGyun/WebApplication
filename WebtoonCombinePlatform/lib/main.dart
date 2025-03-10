@@ -51,8 +51,8 @@ class MyApp extends StatelessWidget {
       routerConfig: _router, //Gorouter 연결
       title: '통합 웹툰 플랫폼 - 레다게임즈',
       theme: ThemeData(
-        scaffoldBackgroundColor: Color(0xFF0b0d18),
-        colorScheme: ColorScheme.fromSwatch(backgroundColor: Color(0xFF0b0d18)
+        scaffoldBackgroundColor: Color(0xff101322),
+        colorScheme: ColorScheme.fromSwatch(backgroundColor: Color(0xff101322)
         ),
       ),
     );
@@ -67,7 +67,7 @@ class HomeScreen extends StatelessWidget{
       child: Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false, //자동으로 뒤로가기 버튼을 표시하지않음
-          backgroundColor: Color(0xFF0b0d18),
+          backgroundColor: Color(0xff101322),
           titleSpacing: 0,
           title: Container(
             height: appbarHeight, width: widthAxis,
@@ -94,7 +94,7 @@ class HomeScreen extends StatelessWidget{
         body: Center(
           child: Container(
             width: widthAxis,
-            decoration: BoxDecoration(color: Color(0xFF0b0d18)
+            decoration: BoxDecoration(color: Color(0xff101322)
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -365,36 +365,36 @@ class UserPage extends StatelessWidget{
       width: 140, //박스 너비
       height: 80, //박스 높이
       decoration: BoxDecoration(
-        color: Color(0xFF0b0d18),
+        color: Color(0xff101322),
       ),
       child: TextButton(
-          onPressed: (){
-            _MoveMyPage(context);
-          },
-          style: TextButton.styleFrom(
-            padding: EdgeInsets.zero,
-            minimumSize: Size(100, 50),
-            foregroundColor: Color(0xFF0b0d18), //마우스오버 효과 제거
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.person,
-                color: Color(0xFFd3d3d3),
-                size: 40,
+        onPressed: (){
+          _MoveMyPage(context);
+        },
+        style: TextButton.styleFrom(
+          padding: EdgeInsets.zero,
+          minimumSize: Size(100, 50),
+          foregroundColor: Color(0xff101322), //마우스오버 효과 제거
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.person,
+              color: Color(0xFFd3d3d3),
+              size: 40,
+            ),
+            SizedBox(height: 0), //아이콘과 텍스트 사이의 간격
+            Text(
+              '마이페이지',
+              style: TextStyle(
+                fontFamily: 'Arial',
+                fontSize: 10,
+                color: Colors.white,
               ),
-              SizedBox(height: 0), //아이콘과 텍스트 사이의 간격
-              Text(
-                '마이페이지',
-                style: TextStyle(
-                  fontFamily: 'Arial',
-                  fontSize: 10,
-                  color: Colors.white,
-                ),
-              )
-            ],
-          )
+            )
+          ],
+        )
       ),
     );
   }

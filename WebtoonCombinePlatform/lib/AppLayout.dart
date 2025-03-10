@@ -10,21 +10,21 @@ class UILayout extends StatelessWidget{
   @override
   Widget build(BuildContext context){
     return Container(
-      color: Color(0xFF0b0d18),
+      color: Color(0xff101322),
       child: Column(
         children: [
           Expanded(child: child), //화면의 나머지 영역 차지
           SafeArea(
             child: Container(
-              color: Color(0xFF0b0d18),
+              color: Color(0xff101322),
               width: widthAxis,
               height: 60,
               alignment: Alignment.center,
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly, //간격균등배치
+                //mainAxisAlignment: MainAxisAlignment.spaceEvenly, //간격균등배치
                 children: [
                   UserPage(),
-                  UserPage(),UserPage(),UserPage(),UserPage(),
+                  //UserPage(),UserPage(),UserPage(),UserPage(),
                 ],
               ),
             ),
