@@ -3,6 +3,7 @@ import 'package:web/web.dart' as web;
 import 'dart:async';
 import 'package:go_router/go_router.dart';
 
+import 'userInformation.dart';
 import 'greeting_screen.dart';//greeting스크린 불러오기
 
 double widthAxis = 700;
@@ -24,6 +25,9 @@ void main() async{
         builder: (context, state) => GreetingScreen(),
       ),
       /*//회원가입 페이지로 라우팅
+      GoRoute(
+        path: '/user/myPage',
+      ),
       GoRoute(
         path: '/user/register',
       ),
@@ -359,7 +363,12 @@ class UserPage extends StatelessWidget{
   void _MoveMyPage(BuildContext context){
     //로그인이 안됐을 때 greetings 페이지로 이동
     //로그인이 됐을 때 로그인 페이지로 이동
-    context.push('/user/greetings');
+    if(login){
+      context.push('/user/myPage');
+    }
+    else if(!login){
+      context.push('/user/greetings');
+    }
   }
 
   @override
