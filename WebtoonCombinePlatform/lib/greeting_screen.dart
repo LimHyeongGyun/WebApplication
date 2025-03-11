@@ -16,10 +16,10 @@ class GreetingScreen extends StatelessWidget{
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             //뒤로가기 버튼
-            backButton(),
+            BackButton(),
             //사용자 알람 아이콘
-            askInformation(),
-            registerButton(),
+            AskInformation(),
+            RegisterButton(),
           ],
         ),
       ),
@@ -28,8 +28,8 @@ class GreetingScreen extends StatelessWidget{
 }
 
 //뒤로가기 버튼
-class backButton extends StatelessWidget{
-  const backButton({super.key});
+class BackButton extends StatelessWidget{
+  const BackButton({super.key});
 
   @override
   Widget build(BuildContext context){
@@ -51,8 +51,8 @@ class backButton extends StatelessWidget{
   }
 }
 //문의하기 버튼
-class askInformation extends StatelessWidget{
-  const askInformation({super.key});
+class AskInformation extends StatelessWidget{
+  const AskInformation({super.key});
 
   @override
   Widget build(BuildContext context){
@@ -70,8 +70,8 @@ class askInformation extends StatelessWidget{
   }
 }
 //회원가입 버튼
-class registerButton extends StatelessWidget{
-  const registerButton({super.key});
+class RegisterButton extends StatelessWidget{
+  const RegisterButton({super.key});
 
   @override
   Widget build(BuildContext context){
@@ -89,8 +89,8 @@ class registerButton extends StatelessWidget{
   }
 }
 //로그인 버튼
-class loginButton extends StatelessWidget{
-  const loginButton({super.key});
+class LoginButton extends StatelessWidget{
+  const LoginButton({super.key});
 
   @override
   Widget build(BuildContext context){

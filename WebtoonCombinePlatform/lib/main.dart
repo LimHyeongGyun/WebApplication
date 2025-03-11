@@ -1,47 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:web/web.dart' as web;
-import 'dart:async';
 import 'package:go_router/go_router.dart';
+import 'dart:async';
+
+import 'GoRouteManage.dart'; //GoRoute 설정파일
 
 import 'AppLayout.dart'; //UI레이아웃
 import 'userInformation.dart'; //유저정보
-import 'greeting_screen.dart';//greeting스크린
-import 'register_screen.dart'; //회원가입 화면
 
 double appbarHeight = 56;
 double widthAxis = 700;
 
 //go_router 설정
-final GoRouter _router = GoRouter(
-    initialLocation: '/home',
-    routes: [
-      //페이지 메인홈
-      GoRoute(
-        path: '/home',
-        builder: (context, state) => HomeScreen(),
-      ),
-      //유저 회원가입 및 로그인 안내 페이지로 라우팅
-      GoRoute(
-        path: '/user/greetings',
-        builder: (context, state) => GreetingScreen(),
-      ),
-      //회원가입 페이지로 라우팅
-      GoRoute(
-        path: '/user/register',
-        builder: (context, state) => RegisterScreen(),
-      ),
-      /*GoRoute(
-        path: '/user/register',
-      ),
-      //이메일 로그인 페이지로 라우팅
-      GoRoute(
-        path: '/user/login',
-      )*/
-    ]
-);
 
 void main() async{
-  runApp(MyApp(router: _router));
+  runApp(MyApp(router: router));
 }
 
 class MyApp extends StatelessWidget {
@@ -50,7 +23,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      routerConfig: _router, //Gorouter 연결
+      routerConfig: router, //Gorouter 연결
       title: '통합 웹툰 플랫폼 - 레다게임즈',
       theme: ThemeData(
         scaffoldBackgroundColor: Color(0xff101322),
@@ -346,16 +319,17 @@ class _PlatformRankState extends State<PlatformRank>{
   }
 }
 
+//마이페이지 버튼
 class UserPage extends StatelessWidget{
   const UserPage({super.key});
 
   //페이지 라우팅하기
   void _MoveMyPage(BuildContext context){
-    //로그인이 안됐을 때 greetings 페이지로 이동
     //로그인이 됐을 때 로그인 페이지로 이동
     if(login){
       context.push('/user/myPage');
     }
+    //로그인이 안됐을 때 greetings 페이지로 이동
     else if(!login){
       context.push('/user/greetings');
     }
