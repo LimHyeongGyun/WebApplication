@@ -5,7 +5,8 @@ import 'package:go_router/go_router.dart';
 
 import 'AppLayout.dart'; //UI레이아웃
 import 'userInformation.dart'; //유저정보
-import 'greeting_screen.dart';//greeting스크린 불러오기
+import 'greeting_screen.dart';//greeting스크린
+import 'register_screen.dart'; //회원가입 화면
 
 double appbarHeight = 56;
 double widthAxis = 700;
@@ -24,11 +25,12 @@ final GoRouter _router = GoRouter(
         path: '/user/greetings',
         builder: (context, state) => GreetingScreen(),
       ),
-      /*//회원가입 페이지로 라우팅
+      //회원가입 페이지로 라우팅
       GoRoute(
-        path: '/user/myPage',
+        path: '/user/register',
+        builder: (context, state) => RegisterScreen(),
       ),
-      GoRoute(
+      /*GoRoute(
         path: '/user/register',
       ),
       //이메일 로그인 페이지로 라우팅

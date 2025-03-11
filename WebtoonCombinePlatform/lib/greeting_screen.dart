@@ -19,6 +19,7 @@ class GreetingScreen extends StatelessWidget{
             backButton(),
             //사용자 알람 아이콘
             askInformation(),
+            registerButton(),
           ],
         ),
       ),
@@ -76,7 +77,7 @@ class registerButton extends StatelessWidget{
   Widget build(BuildContext context){
     return TextButton(
       onPressed: (){
-        context.push('');
+        context.push('/user/register');
       },
       child: Text(
         '이메일 회원가입',
