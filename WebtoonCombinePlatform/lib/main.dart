@@ -46,7 +46,7 @@ class HomeScreen extends StatelessWidget{
           titleSpacing: 0,
           title: Container(
             height: appbarHeight, width: widthAxis,
-            color: Color(0xFF0b0d18),
+            color: Color(0xff101322),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -203,21 +203,21 @@ class SearchEngine extends StatelessWidget{
 }
 
 enum Platform{
-  Trend,
-  NaverWebtoon,
-  KaKaoWebtoon,
-  LezhineComics;
+  trend,
+  naverWebtoon,
+  kaKaoWebtoon,
+  lezhineComics;
 
   //오버라이드로 한국어 반환
   String get korean{
     switch(this){
-      case Platform.Trend:
+      case Platform.trend:
         return "트렌드";
-      case Platform.NaverWebtoon:
+      case Platform.naverWebtoon:
         return "네이버웹툰";
-      case Platform.KaKaoWebtoon:
+      case Platform.kaKaoWebtoon:
         return "카카오웹툰";
-      case Platform.LezhineComics:
+      case Platform.lezhineComics:
         return "레진코믹스";
     }
   }
@@ -232,7 +232,7 @@ class PlatformRank extends StatefulWidget{
 
 class _PlatformRankState extends State<PlatformRank>{
 
-  Platform platform = Platform.NaverWebtoon;
+  Platform platform = Platform.naverWebtoon;
   late String platformName = platform.korean;
   Timer? _timer;
 
@@ -258,10 +258,10 @@ class _PlatformRankState extends State<PlatformRank>{
     late String webtoonUrl;
 
     //현재 플랫폼이 네이버 웹툰이면
-    if(platform == Platform.NaverWebtoon){
+    if(platform == Platform.naverWebtoon){
       webtoonUrl = naverWebtoonUrl;
     }
-    else if(platform == Platform.KaKaoWebtoon){
+    else if(platform == Platform.kaKaoWebtoon){
       webtoonUrl = kakaoWebtoonUrl;
     }
     
@@ -284,34 +284,33 @@ class _PlatformRankState extends State<PlatformRank>{
         color: Color(0xFF25304a),
         borderRadius: BorderRadius.circular(8.0), //모서리 둥글게
       ),
-      child: TextButton(
-        onPressed: (){
-          _launcherURL(); //해당 링크로 이동
-        },
-        style: TextButton.styleFrom(
-          padding: EdgeInsets.zero,
-          minimumSize: Size(double.infinity, 50),
-          foregroundColor: Color(0xFF25304a), //마우스오버 효과 제거
-        ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                '오늘의 \'$platformName\' 랭킹',
-                style: TextStyle(
-                  fontFamily: 'Arial',
-                  fontSize: 18,
-                  color: Colors.white,
+      child: MouseRegion(
+        cursor: SystemMouseCursors.click,
+        child: GestureDetector(
+          onTap: (){
+            _launcherURL(); //해당 링크로 이동
+          },
+          child: Container(
+            constraints: BoxConstraints(maxHeight: 50),
+            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  '오늘의 \'$platformName\' 랭킹',
+                  style: TextStyle(
+                    fontFamily: 'Arial',
+                    fontSize: 18,
+                    color: Colors.white,
+                  ),
                 ),
-              ),
-              Icon(
-                Icons.chevron_right,
-                color: Colors.white,
-                size: 25,
-              ),
-            ],
+                Icon(
+                  Icons.chevron_right,
+                  color: Colors.white,
+                  size: 25,
+                ),
+              ],
+            )
           )
         )
       ),
@@ -324,7 +323,7 @@ class UserPage extends StatelessWidget{
   const UserPage({super.key});
 
   //페이지 라우팅하기
-  void _MoveMyPage(BuildContext context){
+  void _moveMyPage(BuildContext context){
     //로그인이 됐을 때 로그인 페이지로 이동
     if(login){
       context.push('/user/myPage');
@@ -345,7 +344,7 @@ class UserPage extends StatelessWidget{
       ),
       child: TextButton(
         onPressed: (){
-          _MoveMyPage(context);
+          _moveMyPage(context);
         },
         style: TextButton.styleFrom(
           padding: EdgeInsets.zero,
