@@ -159,62 +159,94 @@ class EnterUseEmail extends StatefulWidget{
 }
 //이메일 InputField
 class _EmailInputField extends State<EnterUseEmail>{
-  final TextEditingController _controller = TextEditingController();
-  late String email;
+  final TextEditingController _emailController = TextEditingController();
+  final _formKey = GlobalKey<FormState>(); //폼의 상태를 관리할 키
+  String? _errorMessage; //오류 메시지를 저장할 변수
+
+  //이메일 체크하는 함수
+  String? _checkEmail(String? value){
+    //이메일 입력란이 비어있을 때
+    if(value == null || value.isEmpty){
+      return '입력창에 내용을 입력해주세요';
+    }
+    return null;
+    //이메일 정규식 검증 패턴
+  }
+
+  void _deleteEmail(){
+    _emailController.clear(); //이메일 값 지우기
+    setState(() {
+      _errorMessage = _checkEmail(''); //비어있는 값으로 다시 체크
+    });
+    //폼 다시 검즘 - TextFormField의 validator 호출
+    _formKey.currentState?.validate();
+  }
 
   @override
   Widget build(BuildContext context){
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          '이메일',
-          style: TextStyle(
-            fontFamily: 'Arial',
-            fontSize: 15,
-            color: Colors.white,
-          ),
-        ),
-        SizedBox(height: 10),
-        Container(
-          width: 600,
-          height: 50,
-          decoration: BoxDecoration(
-            color: Color(0xFF25304a),
-            borderRadius: BorderRadius.circular(8.0),
-          ),
-          child:Padding(
-            padding: EdgeInsets.only(left: 10),
-            child: TextFormField(
-              decoration: InputDecoration(
-                border: InputBorder.none, //텍스트가이드선 제거
-                hintText: '이메일 주소 입력',
-                hintStyle: TextStyle(
-                  fontSize: 15,
-                  color: Color(0xFF305984),
-                ),
-                contentPadding: EdgeInsets.symmetric(vertical: 15), //패딩 조절
-                suffixIcon: IconButton(
-                  onPressed: (){
-                  context.pop(); //입력한 이메일 지우기
-                  },
-                  icon: Icon(
-                    Icons.cancel,
-                    color: Colors.white,
-                    size: 20,
-                  ),
-                  hoverColor: Colors.transparent, //마우스오버 효과(hoverSplash)제거
-                )
-              ),
+    return Form(
+      key: _formKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              '이메일',
               style: TextStyle(
+                fontFamily: 'Arial',
                 fontSize: 15,
-                color: Colors.white
-              ),//텍스트 글자 색
+                color: Colors.white,
+              ),
             ),
-          ),
-        ),
-        SizedBox(height: 5),
-      ],
+            SizedBox(height: 10),
+            Container(
+              width: 600,
+              height: 50,
+              decoration: BoxDecoration(
+                  color: Color(0xFF25304a),
+                  borderRadius: BorderRadius.circular(8.0),
+                  border: Border.all(
+                    color: _errorMessage == null ? Colors.transparent : Colors.red, //에러시 테두리 빨갛게
+                    width: 2,
+                  )
+              ),
+              child:Padding(
+                padding: EdgeInsets.only(left: 10),
+                child: TextFormField(
+                  controller: _emailController, //입력 관리 컨트롤러
+                  keyboardType: TextInputType.emailAddress, //입력에 최적화된 키보드 사용
+                  decoration: InputDecoration(
+                    border: InputBorder.none, //텍스트가이드선 제거
+                    hintText: '이메일 주소 입력',
+                    hintStyle: TextStyle(fontSize: 15, color: Color(0xFF305984)),
+                    contentPadding: EdgeInsets.symmetric(vertical: 15), //패딩 조절
+                    suffixIcon: IconButton(
+                      onPressed: _deleteEmail,
+                      icon: Icon(Icons.cancel, color: Colors.white, size: 20),
+                      hoverColor: Colors.transparent, //마우스오버 효과(hoverSplash)제거
+                    ),
+                  ),
+                  //validator: _checkEmail, //이메일 형식 검증
+                  autovalidateMode: AutovalidateMode.onUserInteraction, //사용자 입력 후 자동검출
+                  style: TextStyle(fontSize: 15, color: Colors.white),//텍스트 글자 색
+                  onChanged: (value){
+                    setState(() {
+                      _errorMessage = _checkEmail(value);
+                    });
+                  },
+                ),
+              ),
+            ),
+            SizedBox(height: 5),
+            if(_errorMessage != null)
+              Padding(
+                padding: EdgeInsets.only(top: 0),
+                child: Text(
+                  _errorMessage!,
+                  style: TextStyle(color: Colors.red, fontSize: 14)
+                ),
+              ),
+          ],
+        )
     );
   }
 }
