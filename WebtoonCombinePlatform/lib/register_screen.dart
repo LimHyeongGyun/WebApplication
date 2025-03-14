@@ -162,6 +162,10 @@ class _EmailInputField extends State<EnterUseEmail>{
   final TextEditingController _emailController = TextEditingController();
   final _formKey = GlobalKey<FormState>(); //폼의 상태를 관리할 키
   String? _errorMessage; //오류 메시지를 저장할 변수
+  //이메일 정규식 검증을 위한 변수
+  final RegExp emailRegex = RegExp(
+      r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+  );
 
   //이메일 체크하는 함수
   String? _checkEmail(String? value){
@@ -169,8 +173,12 @@ class _EmailInputField extends State<EnterUseEmail>{
     if(value == null || value.isEmpty){
       return '입력창에 내용을 입력해주세요';
     }
-    return null;
     //이메일 정규식 검증 패턴
+    else if(!emailRegex.hasMatch(value)){
+      return '올바른 이메일 형식이 아닙니다';
+    }
+    //이미 가입한 이메일인지 검증
+    return null;
   }
 
   void _deleteEmail(){
